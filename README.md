@@ -32,9 +32,10 @@ yarn hardhat compile
 ```bash
 yarn hardhat test
 ```
-5. Deployment
+5. Deployment:
 To deploy the smart contract to a local or live Ethereum network, 
 follow these steps:
+
 1. Set up environment variables:
 Create a .env file in the root directory and add your network and account details.
 ```bash
