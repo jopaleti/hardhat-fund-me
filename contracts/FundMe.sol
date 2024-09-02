@@ -1,19 +1,25 @@
-// Get funds from users
-// Withdraw funds
-// Set a minimum funding value in usd
-
 // SPDX-License-Identifier: MIT
+// Pragma
 pragma solidity ^0.8.8;
-
+// Imports
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
+// Error Codes
+error FundMe__NotOwner();
 
-error NotOwner();
-
+// Interfaces, Library, Contracts
+/**
+ * @title A contract for crowd funding
+ * @author jopaleti
+ * @notice This contract is to demo a sample funding contract
+ * @dev This implements price feed as our library
+ */
 contract FundMe {
+    // Type declarations
     using PriceConverter for uint256; 
 
     uint256 public MINIMUM_USD = 50 * 1e18;
-
+    // state variables!
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
@@ -27,6 +33,10 @@ contract FundMe {
         priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
+    /**
+     * @notice This function funds this contract
+     * @dev This implements price feeds as our library
+     */
     function fund() public payable  {
         // Want to be able to strore minimum fund amount in USD
         require(msg.value.getConversionRate(priceFeed) > 1e18, "Didn't send enough "); // 1e18 = 1 * 10 ** 18
@@ -55,7 +65,7 @@ contract FundMe {
 
     modifier onlyOwner {
         // require(msg.sender == i_owner, "Sender is not the owner");
-        if (msg.sender != i_owner) { revert NotOwner(); }
+        if (msg.sender != i_owner) { revert FundMe__NotOwner(); }
         _;
     }
 
