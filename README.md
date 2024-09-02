@@ -42,6 +42,7 @@ SEPOLIA_RPC_URL=<RPC_URL>
 PRIVATE_KEY=<PRIVATE_KEY>
 ETHERSCAN_API_KEY=<ETHERSCAN_API_KEY>
 COINMARKETCAP_API_KEY=<COINMARKETCAP_API_KEY>
+```
 2. Deploy to the network:
 ```bash
 yarn hardhat run scripts/deploy.js --network sepolia
