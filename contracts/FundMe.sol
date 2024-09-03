@@ -16,7 +16,7 @@ error FundMe__NotOwner();
  */
 contract FundMe {
     // Type declarations
-    using PriceConverter for uint256; 
+    using PriceConverter for uint256;
 
     uint256 public MINIMUM_USD = 50 * 1e18;
     // state variables!
@@ -37,15 +37,22 @@ contract FundMe {
      * @notice This function funds this contract
      * @dev This implements price feeds as our library
      */
-    function fund() public payable  {
+    function fund() public payable {
         // Want to be able to strore minimum fund amount in USD
-        require(msg.value.getConversionRate(priceFeed) > 1e18, "Didn't send enough "); // 1e18 = 1 * 10 ** 18
+        require(
+            msg.value.getConversionRate(priceFeed) > 1e18,
+            "Didn't send enough "
+        ); // 1e18 = 1 * 10 ** 18
         funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] = msg.value;
+        addressToAmountFunded[msg.sender] += msg.value;
     }
 
     function withdraw() public onlyOwner {
-        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
+        for (
+            uint256 funderIndex = 0;
+            funderIndex < funders.length;
+            funderIndex++
+        ) {
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
@@ -59,21 +66,39 @@ contract FundMe {
         // bool sendSuccess = payable (msg.sender).send(address(this).balance);
         // require(sendSuccess, "Send failed");
         // call
-        (bool callSuccess, ) = payable (msg.sender).call{value: address(this).balance}("");
+        (bool callSuccess, ) = payable(msg.sender).call{
+            value: address(this).balance
+        }("");
         require(callSuccess, "call failed");
     }
 
-    modifier onlyOwner {
+    modifier onlyOwner() {
         // require(msg.sender == i_owner, "Sender is not the owner");
-        if (msg.sender != i_owner) { revert FundMe__NotOwner(); }
+        if (msg.sender != i_owner) {
+            revert FundMe__NotOwner();
+        }
         _;
     }
 
-    receive() external payable { 
+    receive() external payable {
         fund();
     }
 
-    fallback() external payable { 
+    fallback() external payable {
         fund();
+    }
+     /** @notice Gets the amount that an address has funded
+     *  @param fundingAddress the address of the funder
+     *  @return the amount funded
+     */
+    function getAddressToAmountFunded(address fundingAddress)
+        public
+        view
+        returns (uint256)
+    {
+        return addressToAmountFunded[fundingAddress];
+    }
+     function getFunder(uint256 index) public view returns (address) {
+        return funders[index];
     }
 }

@@ -20,6 +20,10 @@ module.exports = {
             chainId: 11155111,
             blockConfirmations: 6,
         },
+        hardhat: {
+            chainId: 1337,
+            gasPrice: 20000000000, // 20 Gwei
+        },
         localhost: {
             url: "http://127.0.0.1:8545/",
             // accounts: Thanks hardhat!
