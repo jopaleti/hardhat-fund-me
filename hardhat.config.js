@@ -2,7 +2,9 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
 require("dotenv").config();
 require("hardhat-gas-reporter");
+// require("@nomiclabs/hardhat-etherscan");
 require("hardhat-deploy");
+// require("@nomiclabs/hardhat-waffle");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const SEPOLIA_RPC_URL =
@@ -13,6 +15,7 @@ const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || "key";
 
 module.exports = {
     defaultNetwork: "hardhat",
+    allowUnlimitedContractSize: true,
     networks: {
         sepolia: {
             url: SEPOLIA_RPC_URL,
@@ -38,19 +41,17 @@ module.exports = {
         apiKey: ETHERSCAN_API_KEY,
     },
     gasReporter: {
-        enabled: false,
+        enabled: true,
         outputFile: "gas-report.txt",
         noColors: true,
         currency: "USD",
-        coinmarketcap: COINMARKETCAP_API_KEY,
+        // coinmarketcap: COINMARKETCAP_API_KEY,
         token: "SEPOLIA",
     },
     namedAccounts: {
         deployer: {
-            default: 0,
-        },
-        user: {
-            default: 1,
+            default: 0, // here this will by default take the first account as deployer
+            1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
         },
     },
 };

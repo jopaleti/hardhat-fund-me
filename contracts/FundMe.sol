@@ -20,17 +20,17 @@ contract FundMe {
 
     uint256 public MINIMUM_USD = 50 * 1e18;
     // state variables!
-    address[] public funders;
-    mapping(address => uint256) public addressToAmountFunded;
+    address[] public s_funders;
+    mapping(address => uint256) public s_addressToAmountFunded;
 
     address public immutable i_owner;
 
-    AggregatorV3Interface public priceFeed;
+    AggregatorV3Interface public s_priceFeed;
 
     // It get called immediately you deployed the contract
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
-        priceFeed = AggregatorV3Interface(priceFeedAddress);
+        s_priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
     /**
@@ -40,24 +40,24 @@ contract FundMe {
     function fund() public payable {
         // Want to be able to strore minimum fund amount in USD
         require(
-            msg.value.getConversionRate(priceFeed) > 1e18,
+            msg.value.getConversionRate(s_priceFeed) > 1e18,
             "Didn't send enough "
         ); // 1e18 = 1 * 10 ** 18
-        funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] += msg.value;
+        s_funders.push(msg.sender);
+        s_addressToAmountFunded[msg.sender] += msg.value;
     }
 
     function withdraw() public onlyOwner {
         for (
             uint256 funderIndex = 0;
-            funderIndex < funders.length;
+            funderIndex < s_funders.length;
             funderIndex++
         ) {
-            address funder = funders[funderIndex];
-            addressToAmountFunded[funder] = 0;
+            address funder = s_funders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
         }
         // resetting the funders array to have a BRAND NEW ADDRESS with 0 object in it
-        funders = new address[](0);
+        s_funders = new address[](0);
         // Withdraw Funds
 
         // transfer
@@ -70,6 +70,19 @@ contract FundMe {
             value: address(this).balance
         }("");
         require(callSuccess, "call failed");
+    }
+
+    // CHEAPER WITHDRAW
+    function cheaperWithdraw() public payable onlyOwner {
+        address[] memory funders = s_funders;
+        // Mapping cant be in memory, sorry!
+        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
+            address funder = funders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
+        }
+        s_funders = new address[](0);
+        (bool success, ) = i_owner.call{value: address(this).balance}("");
+        require(success);
     }
 
     modifier onlyOwner() {
@@ -96,9 +109,19 @@ contract FundMe {
         view
         returns (uint256)
     {
-        return addressToAmountFunded[fundingAddress];
+        return s_addressToAmountFunded[fundingAddress];
     }
      function getFunder(uint256 index) public view returns (address) {
-        return funders[index];
+        return s_funders[index];
+    }
+    function getOwner() public view returns (address) {
+        return i_owner;
+    }
+
+    function getPriceFeed() public view returns (AggregatorV3Interface) {
+        return s_priceFeed;
+    }
+    function getBalance(address addr) public view returns (uint256) {
+        return s_addressToAmountFunded[addr];
     }
 }
