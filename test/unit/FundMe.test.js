@@ -20,7 +20,7 @@ const { developmentChains } = require("../../helper-hardhat-config");
               // Get the deployed FundMe contract
               const fundMeDeployment = await deployments.get("FundMe");
 
-                // Getting the contract address
+              // Getting the contract address
               deployer = fundMeDeployment.address;
               fundMe = await ethers.getContractAt("FundMe", deployer);
               mockV3Aggregator = await ethers.getContractAt(
@@ -48,12 +48,13 @@ const { developmentChains } = require("../../helper-hardhat-config");
               });
               // we could be even more precise here by making sure exactly $50 works
               // but this is good enough for now
-              // it("Updates the amount funded data structure", async () => {
-              //     await fundMe.fund({ value: sendValue });
-              //     const response =
-              //         await fundMe.getAddressToAmountFunded(accDeployer.address);
-              //     assert.equal(response.toString(), "14000000000000000000");
-              // });
+              it("Updates the amount funded data structure", async () => {
+                  await fundMe.fund({ value: sendValue });
+                  const response = await fundMe.getAddressToAmountFunded(
+                      accDeployer.address,
+                  );
+                  assert.equal(response.toString(), sendValue.toString());
+              });
               it("Adds funder to array of funders", async () => {
                   await fundMe.fund({ value: sendValue });
                   const response = await fundMe.getFunder(0);
