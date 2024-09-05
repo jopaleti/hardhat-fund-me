@@ -1,4 +1,7 @@
 {
+    "name": "hardhat fund Me",
+    "author": "Oluwatobi Opaleti",
+    "version": "1.0.0",
     "devDependencies": {
         "@chainlink/contracts": "^1.2.0",
         "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
@@ -31,11 +34,11 @@
         "prettier-plugin-solidity": "^1.4.1"
     },
     "scripts": {
-        "test": "hardhat test",
-        "test:staging": "hardhat test --network sepolia",
-        "lint": "solhint 'contracts/**/*.sol'",
-        "lint:fix": "solhint 'contracts/**/*.sol' --fix",
-        "format": "prettier --write .",
-        "coverage": "hardhat coverage"
+        "test": "yarn hardhat test",
+        "test:staging": "yarn hardhat test --network sepolia",
+        "lint": "yarn solhint 'contracts/*.sol'",
+        "lint:fix": "yarn solhint 'contracts/*.sol' --fix",
+        "format": "yarn prettier --write .",
+        "coverage": "yarn hardhat coverage"
     }
 }

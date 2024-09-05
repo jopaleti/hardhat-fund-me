@@ -13,7 +13,6 @@ const { developmentChains } = require("../../helper-hardhat-config");
           beforeEach(async () => {
               const accounts = await ethers.getSigners();
               accDeployer = accounts[0];
-              console.log({ accDeployer: accDeployer });
 
               await deployments.fixture(["all"]);
 
@@ -27,8 +26,6 @@ const { developmentChains } = require("../../helper-hardhat-config");
                   "MockV3Aggregator",
                   deployer,
               );
-              console.log({ fundMe: fundMe });
-              console.log({ mockV3Aggregator: mockV3Aggregator.target });
           });
 
           describe("constructor", function () {

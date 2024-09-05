@@ -6,7 +6,7 @@ import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.so
 // NOTE: Library can have any state variable and can also send ether.
 library PriceConverter {
     function getPrice(AggregatorV3Interface priceFeed) internal view returns(uint256) {
-        (,int price,,,) = priceFeed.latestRoundData();
+        (,int256 price,,,) = priceFeed.latestRoundData();
         // ETH in terms of USD
         return uint256(price * 1e18);
     }
