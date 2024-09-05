@@ -61,8 +61,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 This project is licensed under the MIT License.
 
-# TESTING 🚀
-
 ## 🎉 FundMe Smart Contract Testing Suite 🚀
 
 ## 👨‍💻 Explanation of important cases in contract deployment 🚀
