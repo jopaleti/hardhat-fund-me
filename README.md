@@ -1,9 +1,14 @@
 # 💰 Hardhat Fund Me Project
+### This Project is Built with Hardhat version ```"hardhat": "^2.22.10",``` && ```"ethers": "6.13.2",```
 A decentralized crowdfunding platform built with Solidity and 
 Hardhat. This project demonstrates how to create and manage a 
 smart contract that allows users to fund and withdraw from the 
 contract on the Ethereum blockchain. It also integrates Chainlink 
 price feeds to ensure accurate and up-to-date conversions.
+
+## 🚀 This Project is Built with:
+- **Hardhat** version: "hardhat": "^2.22.10" ⚒️
+- **Ethers** version: "ethers": "6.13.2" 📦
 
 ## Features
 1. **🚀 Fund Contract**: Users can easily send ETH to the contract, 
