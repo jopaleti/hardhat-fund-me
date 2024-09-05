@@ -24,13 +24,13 @@ module.exports = {
             blockConfirmations: 6,
         },
         hardhat: {
-            chainId: 1337,
+            chainId: 31337,
             gasPrice: 20000000000, // 20 Gwei
         },
         localhost: {
             url: "http://127.0.0.1:8545/",
             // accounts: Thanks hardhat!
-            chainId: 31337,
+            chainId: 1337,
         },
     },
     // solidity: "0.8.8",

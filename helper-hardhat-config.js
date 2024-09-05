@@ -10,8 +10,12 @@ const networkConfig = {
 };
 
 const developmentChains = ["hardhat", "localhost"];
+const DECIMALS = 8; // Example value for a price feed
+const INITIAL_PRICE = "200000000000"; // This could represent 2,000 with 8 decimals
 
 module.exports = {
     networkConfig,
     developmentChains,
+    DECIMALS, 
+    INITIAL_PRICE
 };
