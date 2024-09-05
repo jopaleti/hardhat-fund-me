@@ -4,7 +4,8 @@ pragma solidity ^0.8.8;
 // Imports
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
-// Error Codes
+
+// 3. Interfaces, Libraries, Contracts
 error FundMe__NotOwner();
 
 // Interfaces, Library, Contracts
@@ -47,6 +48,13 @@ contract FundMe {
         s_addressToAmountFunded[msg.sender] += msg.value;
     }
 
+     // Modifiers
+    modifier onlyOwner() {
+        // require(msg.sender == i_owner);
+        if (msg.sender != i_owner) revert FundMe__NotOwner();
+        _;
+    }
+
     function withdraw() public onlyOwner {
         for (
             uint256 funderIndex = 0;
@@ -83,14 +91,6 @@ contract FundMe {
         s_funders = new address[](0);
         (bool success, ) = i_owner.call{value: address(this).balance}("");
         require(success);
-    }
-
-    modifier onlyOwner() {
-        // require(msg.sender == i_owner, "Sender is not the owner");
-        if (msg.sender != i_owner) {
-            revert FundMe__NotOwner();
-        }
-        _;
     }
 
     receive() external payable {
